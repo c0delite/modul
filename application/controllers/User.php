@@ -38,7 +38,7 @@ class User extends CI_Controller {
 			// set session user datas
 			$_SESSION['ktp']      		= (string)$user->noKtp;
 			$_SESSION['username']     	= (string)$user->username;
-			$_SESSION['logged_in']   	= (bool)true;
+			
 			
 			// user login ok
 			$this->load->view('templates/header',$data);

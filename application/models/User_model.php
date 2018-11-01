@@ -14,7 +14,8 @@ class User_model extends CI_Model {
 	 */
 	public function __construct() {
 		
-		parent::__construct();		
+		parent::__construct();
+		
 	}
 	
 	/**
@@ -52,9 +53,8 @@ class User_model extends CI_Model {
 		$this->db->select('password');
 		$this->db->from('user');
 		$this->db->where('username', $username);
-		$hash = $this->db->get()->row('password');
 		
-		return $this->verify_password_hash($password, $hash);
+		return $this->db->get();
 		
 	}
 	
@@ -81,10 +81,10 @@ class User_model extends CI_Model {
 	 * @param mixed $user_id
 	 * @return object the user object
 	 */
-	public function get_user($ktp) {
+	public function get_user($noKtp) {
 		
 		$this->db->from('user');
-		$this->db->where('noKtp', $ktp);
+		$this->db->where('noKtp', $noKtp);
 		return $this->db->get()->row();
 		
 	}
@@ -114,13 +114,6 @@ class User_model extends CI_Model {
 		
 		return password_verify($password, $hash);
 		
-	}
-
-	private function get_user_detail($ktp){
-		$this->db->from('customer');
-		$this->db->where($ktp,'ktp');
-		return $this->db->get()->row();
-
 	}
 	
 }
