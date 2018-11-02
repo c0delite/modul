@@ -11,23 +11,25 @@
                                     <table id="dataTable" class="text-center">
                                         <thead class="bg-light text-capitalize">
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
-                                                <th>Age</th>
-                                                <th>Start Date</th>
-                                                <th>salary</th>
+                                                <th>id komplain</th>
+                                                <th>tanggal komplain</th>
+                                                <th>kategori</th>
+                                                <th>tanggal update</th>
+                                                <th>teknisi</th>
+                                                <th>status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <?php foreach ($data as $d) {?>    
                                             <tr>
-                                                <td>Airi Satou</td>
-                                                <td>Accountant</td>
-                                                <td>Tokyo</td>
-                                                <td>33</td>
-                                                <td>2008/11/28</td>
-                                                <td>$162,700</td>
+                                                <td><?php echo $d->idKomplain; ?></td>
+                                                <td><?php echo $d->tglKomplain; ?></td>
+                                                <td><?php echo $d->katKomplain; ?></td>
+                                                <td><?php echo $d->tglUpdate; ?></td>
+                                                <td><?php echo $d->teknisi; ?></td>
+                                                <td><?php echo $d->status; ?></td>
                                             </tr>
+                                            <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>

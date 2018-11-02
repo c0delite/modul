@@ -84,13 +84,20 @@ class User extends CI_Controller {
 	}
 
 	public function complain(){
+
+		$ktp = $_SESSION['ktp'];
+		$query= $this->user_model->get_komplain($ktp);
+		$sql = $query->result();
+
+
 		$data = array(
 			'nama' 	=> $_SESSION['username'],
 			'link1' => 'Dashboard',
 			'link2' => 'Complain',
 			'page1' => 'Profile',
 			'page2' => 'complain',
-			'title' => 'Complain'
+			'title' => 'Complain',
+			'data'	=> $sql
 		);
 
 		$this->load->view('templates/header', $data);

@@ -96,6 +96,12 @@ class User_model extends CI_Model {
 		$this->db->where('noktp', $ktp);
 		return $this->db->get();
 	}
+
+	public function get_komplain($ktp) {
+		$this->db->from('komplain');
+		$this->db->where('noktp', $ktp);
+		return $this->db->get();
+	}
 	
 	/**
 	 * hash_password function.

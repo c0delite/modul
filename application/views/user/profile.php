@@ -60,11 +60,11 @@
                     <table class="table text-left">
                         <tr>
                             <td>No tlp</td>
-                            <td></td>
+                            <td><?php echo $d->notlp; ?></td>
                         </tr>
                         <tr>
                             <td>Email</td>
-                            <td></td>
+                            <td><?php echo $d->email; ?></td>
                         </tr>
                     </table>                
                 </div>
