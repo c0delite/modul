@@ -88,6 +88,14 @@ class User_model extends CI_Model {
 		return $this->db->get()->row();
 		
 	}
+
+	public function get_pelanggan($ktp) {
+		$this->db->from('pelanggan');
+		$this->db->join('unit', 'pelanggan.idUnit = unit.idUnit');
+		$this->db->join('tower', 'pelanggan.idTower = tower.idTower');
+		$this->db->where('noktp', $ktp);
+		return $this->db->get();
+	}
 	
 	/**
 	 * hash_password function.

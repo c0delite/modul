@@ -62,16 +62,54 @@ class User extends CI_Controller {
 	}
 
 	public function profile() {
-		$data = array(
-			'nama' => $_SESSION['username']
-		);
-		$ktp = $_SESSION['ktp'];
-		$query = $this->user_model->get_user_detail($ktp);
 
-		$this->load->view('templates/header');
-		$this->load->view('user/profile',$data);
+		$ktp = $_SESSION['ktp'];
+		$query= $this->user_model->get_pelanggan($ktp);
+		$sql = $query->result();
+
+		$data = array(
+			'nama' 	=> $_SESSION['username'],
+			'link1' => 'Dashboard',
+			'link2' => 'Profile',
+			'page1' => 'Profile',
+			'page2' => 'complain',
+			'title' => 'Profile',
+			'data'	=> $sql
+		);
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/nav');
+		$this->load->view('user/profile');
 		$this->load->view('templates/footer');
 	}
+
+	public function complain(){
+		$data = array(
+			'nama' 	=> $_SESSION['username'],
+			'link1' => 'Dashboard',
+			'link2' => 'Complain',
+			'page1' => 'Profile',
+			'page2' => 'complain',
+			'title' => 'Complain'
+		);
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/nav');
+		$this->load->view('user/complain');
+		$this->load->view('templates/footer');
+
+	}
+
+	public function createcomplain(){
+
+	}
+
 	
+	public function logout(){
+		$this->session->unset_userdata('ktp');
+		$this->session->unset_userdata('username');
+		$this->session->sess_destroy();
+		redirect('user/login','refresh'); 
+	}
 	
 }
