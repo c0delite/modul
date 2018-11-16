@@ -1,5 +1,6 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+if(!defined('BASEPATH')) exit('No direct script access allowed');
+
 /**
  * User class.
  * 
@@ -17,62 +18,27 @@ class User extends CI_Controller {
 		parent::__construct();
 		$this->load->model('user_model');
 		$this->output->enable_profiler(TRUE);
-	}
-
-	public function login() {
-		$data = array(
-			'title' => 'Login',
-			'data'	=> new stdClass()
-		);
-		$username = $this->input->post('username');
-		$pwd = $this->input->post(md5('password'));
-		$password = md5($pwd);
-		
-
-		//check ke database
-		if ($this->user_model->resolve_user_login($username, $password)->num_rows() == 1) {
-			# code...
-			$ktp = $this->user_model->get_user_id_from_username($username);
-			$user = $this->user_model->get_user($ktp);
-
-			// set session user datas
-			$_SESSION['ktp']      		= (string)$user->noKtp;
-			$_SESSION['username']     	= (string)$user->username;
-			
-			
-			// user login ok
-			$this->load->view('templates/header',$data);
-			$this->load->view('user/loginsukses');
-			$this->session->set_flashdata('message_id', $_SESSION['username']);//message rendered
-			$this->session->set_flashdata('seconds_redirect', 5);//time to be redirected (in seconds)
-			$this->session->set_flashdata('url_redirect', base_url('user/profile'));
-			$this->load->view('templates/footer');
-		} else {
-				
-			// login failed
-			
-			
-			// send error to the view
-			$this->load->view('templates/header',$data);
-			$this->load->view('user/login');
-			$this->load->view('templates/footer');
-			
+		if($this->session->userdata('status') != "login"){
+			redirect(base_url("login"));
 		}
-
+		
 	}
 
 	public function profile() {
+
+		
 
 		$ktp = $_SESSION['ktp'];
 		$query= $this->user_model->get_pelanggan($ktp);
 		$sql = $query->result();
 
 		$data = array(
-			'nama' 	=> $_SESSION['username'],
+			'nama' 	=> $_SESSION['nama'],
 			'link1' => 'Dashboard',
 			'link2' => 'Profile',
+			'pages'	=> 'User',
 			'page1' => 'Profile',
-			'page2' => 'complain',
+			'page2' => 'Complain',
 			'title' => 'Profile',
 			'data'	=> $sql
 		);
@@ -84,20 +50,22 @@ class User extends CI_Controller {
 	}
 
 	public function complain(){
-
 		$ktp = $_SESSION['ktp'];
 		$query= $this->user_model->get_komplain($ktp);
 		$sql = $query->result();
 
 
 		$data = array(
-			'nama' 	=> $_SESSION['username'],
+			'nama' 	=> $_SESSION['nama'],
 			'link1' => 'Dashboard',
 			'link2' => 'Complain',
+			'pages'	=> 'user',
 			'page1' => 'Profile',
 			'page2' => 'complain',
 			'title' => 'Complain',
-			'data'	=> $sql
+			'data'	=> $sql,
+            'kategori' => $this->user_model->dataKategori(),
+            'katSelected' => $this->input->post('kat') ? $this->input->post('kat') : '',
 		);
 
 		$this->load->view('templates/header', $data);
@@ -107,16 +75,22 @@ class User extends CI_Controller {
 
 	}
 
-	public function createcomplain(){
-
+	public function tambahKomplain(){
+        $kat    =$this->input->post('kategori');
+        $detail =$this->input->post('detail');
+        $ktp    =$_SESSION['ktp'];
+        $status ='outstanding';
+        $data=$this->db->query("insert into komplain (katKomplain, detail, noktp,status) VALUES ('$kat','$detail','$ktp','$status');");
+ 
+        echo json_encode($data);
 	}
 
 	
 	public function logout(){
 		$this->session->unset_userdata('ktp');
-		$this->session->unset_userdata('username');
+		$this->session->unset_userdata('nama');
 		$this->session->sess_destroy();
-		redirect('user/login','refresh'); 
+		redirect('login','refresh'); 
 	}
 	
 }

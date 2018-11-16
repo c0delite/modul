@@ -19,12 +19,6 @@
                             <span></span>
                             <span></span>
                         </div>
-                        <div class="search-box pull-left">
-                            <form action="#">
-                                <input type="text" name="search" placeholder="Search..." required>
-                                <i class="ti-search"></i>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -36,7 +30,7 @@
                         <div class="breadcrumbs-area clearfix">
                             <h4 class="page-title pull-left"><?php echo $link2 ?></h4>
                             <ul class="breadcrumbs pull-left">
-                                <li><a href="<?= base_url('user/profile')?>"><?php echo $link1 ?></a></li>
+                                <li><a href="<?= base_url($pages)?>"><?php echo $link1 ?></a></li>
                                 <li><span><?php echo $link2 ?></span></li>
                             </ul>
                         </div>

@@ -97,11 +97,37 @@ class User_model extends CI_Model {
 		return $this->db->get();
 	}
 
+	public function get_all_complain() {
+		$this->db->from('pelanggan');
+		$this->db->join('unit', 'pelanggan.idUnit = unit.idUnit');
+		$this->db->join('tower', 'pelanggan.idTower = tower.idTower');
+		return $this->db->get();
+	}
+
 	public function get_komplain($ktp) {
 		$this->db->from('komplain');
 		$this->db->where('noktp', $ktp);
 		return $this->db->get();
 	}
+    
+    function dataKategori()
+    {
+        // ambil data dari db
+        $this->db->order_by('kategori', 'asc');
+        $result = $this->db->get('katKomplain');
+        
+        // bikin array
+        // please select berikut ini merupakan tambahan saja agar saat pertama
+        // diload akan ditampilkan text please select.
+        $dd[''] = 'Please Select';
+        if ($result->num_rows() > 0) {
+            foreach ($result->result() as $row) {
+            // tentukan value (sebelah kiri) dan labelnya (sebelah kanan)
+                $dd[$row->kategori] = $row->kategori;
+            }
+        }
+        return $dd;
+    }
 	
 	/**
 	 * hash_password function.
